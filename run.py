@@ -14,22 +14,43 @@ def mb_strlen(string,encoding='utf-8'):
 
 
 word_width_min=2
-word_width_max=10
+word_width_max=15
 
 
 
 r=open('a.txt')
 
+stop_words=[',','，','。','．','、','"','“','”','：',' '
+    ,'\n','\r','\t'
+    ,'1','2','3','4','5','6','7','8','9','0'
+    ,'１','２','３','４','５','６','７','８','９','０'
+    ,'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ'
+    ,'Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ'
+    ,'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ'
+    ,'ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙｚ'
+]
+
 for word_width in range(word_width_min,word_width_max+1):
     r.seek(0)
     buff=[]
     for line in r.readlines():
-        print line;
+        print line
         i=0;
+        accepted_count=0;
         while(i < mb_strlen(line)-word_width):
-            print mb_substr(line,i,word_width)
-            buff.append('%s\n'%(mb_substr(line,i,word_width)))
             i+=1;
+            word = mb_substr(line,i,word_width)
+            print word
+            flag_stop=0
+            for sw in stop_words:
+                if word.find(sw) >= 0:
+                    #print '  stoped for %s' %sw
+                    flag_stop+=1
+                    continue
+            if flag_stop==0:
+                buff.append('%s\n'%(word))
+                accepted_count+=1
+            print '    %s acceped' %(accepted_count)
     w=open('output-%d.txt'%(word_width),'w+')
     w.writelines(buff)
     w.flush()
