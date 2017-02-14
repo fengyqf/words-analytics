@@ -17,8 +17,8 @@ word_width_min=2
 word_width_max=15
 output_words_min_count=3
 
-
-r=open('a.txt')
+script_dir=os.path.split(os.path.realpath(__file__))[0]+'/'
+r=open(script_dir+'a.txt')
 
 stop_words=[',','，','。','．','、','"','“','”','：',' '
     ,'\n','\r','\t'
@@ -48,7 +48,7 @@ for word_width in range(word_width_min,word_width_max+1):
                     flag_stop+=1
                     continue
             if flag_stop==0:
-                buff.append('%s\n'%(word))
+                buff.append(word)
                 accepted_count+=1
             print '    %s acceped' %(accepted_count)
 
@@ -66,7 +66,7 @@ for item in sorted_counts:
     if item[1] <= output_words_min_count:
         break
     output+= '%d\t%s\n' %(item[1],item[0])
-w=open('output.txt','w+')
+w=open(script_dir+'output.txt','w+')
 w.write(output)
 w.flush()
 w.close()
