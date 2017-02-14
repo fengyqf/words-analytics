@@ -3,6 +3,7 @@
 
 import sys
 import os
+import datetime
 
 
 def mb_substr(s,start,length=None,encoding="UTF-8") :
@@ -65,7 +66,13 @@ for item in sorted_counts:
     if item[1] < output_words_min_count:
         break
     output+= '%d\t%s\n' %(item[1],item[0])
-w=open(script_dir+'output.txt','w+')
+
+output_file_path=script_dir+'output.txt'
+if os.path.exists(output_file_path):
+    timestamp=datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    os.rename(output_file_path,'%soutput_bak%s.txt'%(script_dir,timestamp))
+
+w=open(output_file_path,'w+')
 w.write(output)
 w.flush()
 w.close()
