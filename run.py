@@ -15,7 +15,7 @@ def mb_strlen(string,encoding='utf-8'):
 
 word_width_min=2
 word_width_max=15
-
+output_words_min_count=3
 
 
 r=open('a.txt')
@@ -30,9 +30,9 @@ stop_words=[',','，','。','．','、','"','“','”','：',' '
     ,'ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙｚ'
 ]
 
+buff=[]
 for word_width in range(word_width_min,word_width_max+1):
     r.seek(0)
-    buff=[]
     for line in r.readlines():
         print line
         i=0;
@@ -51,10 +51,25 @@ for word_width in range(word_width_min,word_width_max+1):
                 buff.append('%s\n'%(word))
                 accepted_count+=1
             print '    %s acceped' %(accepted_count)
-    w=open('output-%d.txt'%(word_width),'w+')
-    w.writelines(buff)
-    w.flush()
-    w.close()
 
-    print  len(buff)
+print '## finished cutting, %d words.' %len(buff)
+
+counts={}
+for word in buff:
+    counts[word] = counts.get(word, 0) + 1
+
+sorted_counts = list(counts.items())
+sorted_counts.sort(lambda a,b: -cmp((a[1], a[0]), (b[1], b[0])))
+
+output=''
+for item in sorted_counts:
+    if item[1] <= output_words_min_count:
+        break
+    output+= '%d\t%s\n' %(item[1],item[0])
+w=open('output.txt','w+')
+w.write(output)
+w.flush()
+w.close()
+
+print 'write done to file output.txt'
 
