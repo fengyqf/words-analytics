@@ -20,7 +20,7 @@ output_words_min_count=3
 script_dir=os.path.split(os.path.realpath(__file__))[0]+'/'
 r=open(script_dir+'a.txt')
 
-stop_words=[',','，','。','．','、','"','“','”','：',' '
+stop_words=[',','，','。','．','、','"','“','”','：',' ','／'
     ,'\n','\r','\t'
     ,'1','2','3','4','5','6','7','8','9','0'
     ,'１','２','３','４','５','６','７','８','９','０'
@@ -30,7 +30,8 @@ stop_words=[',','，','。','．','、','"','“','”','：',' '
     ,'ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙｚ'
 ]
 
-buff=[]
+counts={}
+#buff=[]
 for word_width in range(word_width_min,word_width_max+1):
     r.seek(0)
     for line in r.readlines():
@@ -48,22 +49,20 @@ for word_width in range(word_width_min,word_width_max+1):
                     flag_stop+=1
                     continue
             if flag_stop==0:
-                buff.append(word)
+                counts[word] = counts.get(word, 0) + 1
+                #buff.append(word)
                 accepted_count+=1
             print '    %s acceped' %(accepted_count)
 
-print '## finished cutting, %d words.' %len(buff)
+print '## finished cutting, %d words.' %len(counts)
 
-counts={}
-for word in buff:
-    counts[word] = counts.get(word, 0) + 1
 
 sorted_counts = list(counts.items())
 sorted_counts.sort(lambda a,b: -cmp((a[1], a[0]), (b[1], b[0])))
 
-output=''
+output='times\tword\n'
 for item in sorted_counts:
-    if item[1] <= output_words_min_count:
+    if item[1] < output_words_min_count:
         break
     output+= '%d\t%s\n' %(item[1],item[0])
 w=open(script_dir+'output.txt','w+')
