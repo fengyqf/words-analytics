@@ -61,4 +61,5 @@ config.ini
 *.bak
 *~
 *.swp
-output-*
+output_*
+a_*.txt
