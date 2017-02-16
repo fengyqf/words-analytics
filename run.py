@@ -4,6 +4,7 @@
 import sys
 import os
 import datetime
+import ConfigParser
 
 
 def mb_substr(s,start,length=None,encoding="UTF-8") :
@@ -13,10 +14,6 @@ def mb_substr(s,start,length=None,encoding="UTF-8") :
 def mb_strlen(string,encoding='utf-8'):
      return len(string.decode(encoding))
 
-
-word_width_min=2
-word_width_max=15
-output_words_min_count=3
 
 script_dir=os.path.split(os.path.realpath(__file__))[0]+'/'
 
@@ -29,6 +26,22 @@ stop_words=[',','，','。','．','、','"','“','”','：',' ','／'
     ,'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ'
     ,'ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ'
 ]
+
+config_file=script_dir+'/rconfig.ini'
+
+cp=ConfigParser.ConfigParser()
+cp.read(config_file)
+
+try:
+    word_width_min=int(cp.get('main','word_width_min'))
+    word_width_max=int(cp.get('main','word_width_max'))
+    output_words_min_count=int(cp.get('main','output_words_min_count'))
+except :
+    #raise ConfigParser.NoOptionError(e)
+    print "rconfig.ini ERROR.  You can copy it from rconfig.ini.sample "
+    exit()
+
+
 
 for file in os.listdir(script_dir):
     if not (file[0:2] in ['a_','a.'] and file[-4:]=='.txt') :
