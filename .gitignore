@@ -57,7 +57,7 @@ docs/_build/
 target/
 
 
-config.ini
+rconfig.ini
 *.bak
 *~
 *.swp
