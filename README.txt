@@ -3,17 +3,26 @@
 ## 运行环境： python 2.x版
 如果没有安装，请从这里下载
 https://www.python.org/downloads/
-
 注意：请选择2.x版，*不要*使用3.x版
 
+windows下推荐使用cygwin下的python (似乎运行效率高得多)
+强烈推荐使用64位版 (本脚本使用大量内存，可能超过4G，这是32位python所不能支持的)
+
+
 ## windows下使用步骤
-0. 将 run.py 解压到一个空文件夹里，最好不要放在中文名的文件夹里
+0. 将 run.py 放到一个空文件夹里，最好不要放在中文名的文件夹里；将rconfig.ini.sample复制一份，改名为 rconfig.ini (这是配置文件，可以处行编辑)
 1. 将待统计词频的数据保存成纯文本格式(如txt, csv等)
 2. 转化为utf-8编码(可使用notepad++, edit plus, ultra edit等工具另存为..., 编码选择utf-8)
 3. 将utf-8编码的文件保存为 a.txt, 拷贝到run.py所在的文件夹里
 4. 双击 run.py, 程序运行(可能花费较长时间，视a.txt文件大小及切词长度而定)
 5. 等执行完毕后, 执行窗口将自动退出, 当前目录下会新出现新文件 output.txt, 即运行结果(tab键分隔的文件)
 6. 可以通过“导入外部数据”功能将output.txt导入excel使用, 导入时注意编码为 65001/Unicode/UTF-8, 分隔符号为Tab键
+
+## linux/maxosx下使用
+将 run.py 放到一个空文件夹里；将rconfig.ini.sample复制一份，改名为 rconfig.ini
+进入run.py所在目录python run.py
+别的不需多说，很直接的
+
 
 ## 批量处理多个文件（逐个处理，非并行）
 1. 将待处理的文件命名为 a_***.txt 的形式，放到run.py所在的文件夹里
@@ -42,12 +51,19 @@ https://www.python.org/downloads/
 在cygwin下操作，将所有文件（注意，文件名不能包含空格）放到一个空目录里，cygwin进入该目录，执行如下
 for file in `ls`; do mv $file a_$file ;done
 
+### 转换文件编码
+windows下的txt文件通常是ansi编码，可以通过cygwin快速转编码
+iconv -c -f gbk -t utf-8 your-file-name > your-file-utf8
+一次转当前目录下的多个txt文件
+for file in `ls -d *.txt`; do iconv -c -f gbk -t utf-8 $file > $file.utf8.txt; done
+
 
 ## 配置选项
+配置文件是
+
 注意，不要使用windows自带的记事本、word、写字板等工具编辑；推荐使用notepad++, edit plus, ultra edit等工具
 
 word_width_min=2    // 切词时最短词长度
-
 word_width_max=15   // 切词时最短词长度
 output_words_min_count=3    // 输出结果时，输出最小词频次数；即只输出3次以上的词
 
