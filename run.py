@@ -6,17 +6,6 @@ import os
 import datetime
 import ConfigParser
 
-
-def mb_substr(s,start,length=None,encoding="UTF-8") :
-    u_s = s.decode(encoding)
-    return (u_s[start:(start+length)] if length else u_s[start:]).encode(encoding)
-
-def mb_strlen(string,encoding='utf-8'):
-     return len(string.decode(encoding))
-
-
-script_dir=os.path.split(os.path.realpath(__file__))[0]+'/'
-
 stop_words=[',','，','。','．','、','"','“','”','：',' ','／'
     ,'…','〕','〔','《','》','（','）','；','·','？'
     ,'\n','\r','\t'
@@ -28,8 +17,10 @@ stop_words=[',','，','。','．','、','"','“','”','：',' ','／'
     ,'ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ'
 ]
 
-config_file=script_dir+'/rconfig.ini'
 
+script_dir=os.path.split(os.path.realpath(__file__))[0]+'/'
+
+config_file=script_dir+'/rconfig.ini'
 cp=ConfigParser.ConfigParser()
 cp.read(config_file)
 
