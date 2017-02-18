@@ -43,25 +43,26 @@ except :
     exit()
 
 
+stop_words_u=[it.decode('utf-8') for it in stop_words]
 
 for file in os.listdir(script_dir):
     if not (file[0:2] in ['a_','a.'] and file[-4:]=='.txt') :
         continue
     r=open(script_dir+file)
     counts={}
-    #buff=[]
     for word_width in range(word_width_min,word_width_max+1):
         r.seek(0)
         for line in r.readlines():
             print line
+            line_u=line.decode('utf-8')
+            line_u_len=len(line_u)
             i=0;
             accepted_count=0;
-            while(i < mb_strlen(line)-word_width):
+            while(i < line_u_len-word_width):
                 i+=1;
-                word = mb_substr(line,i,word_width)
-                print word
+                word = line_u[i:(i+word_width)]
                 flag_stop=0
-                for sw in stop_words:
+                for sw in stop_words_u:
                     if word.find(sw) >= 0:
                         #print '  stoped for %s' %sw
                         flag_stop+=1
@@ -70,7 +71,7 @@ for file in os.listdir(script_dir):
                     counts[word] = counts.get(word, 0) + 1
                     #buff.append(word)
                     accepted_count+=1
-                print '    %s acceped' %(accepted_count)
+                #print '    %s acceped' %(accepted_count)
 
     r.close()
 
@@ -84,7 +85,7 @@ for file in os.listdir(script_dir):
     for item in sorted_counts:
         if item[1] < output_words_min_count:
             break
-        output+= '%d\t%s\n' %(item[1],item[0])
+        output+= '%d\t%s\n' %(item[1],item[0].encode('utf-8'))
 
     output_file_path=script_dir+'output_'+file[:-4]+'.txt'
     if os.path.exists(output_file_path):
@@ -96,5 +97,5 @@ for file in os.listdir(script_dir):
     w.flush()
     w.close()
 
-print 'write done to file output.txt'
+print 'write done to file '+output_file_path
 
