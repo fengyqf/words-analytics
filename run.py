@@ -29,6 +29,7 @@ try:
     word_width_min=int(cp.get('main','word_width_min'))
     word_width_max=int(cp.get('main','word_width_max'))
     output_words_min_count=int(cp.get('main','output_words_min_count'))
+    debug=int(cp.get('main','debug'))
 except :
     #raise ConfigParser.NoOptionError(e)
     print "rconfig.ini ERROR.  You can copy it from rconfig.ini.sample "
@@ -44,10 +45,13 @@ for file in os.listdir(script_dir):
         continue
     r=open(script_dir+file)
     counts={}
+    print "File: %s" %file
     for word_width in range(word_width_min,word_width_max+1):
         r.seek(0)
+        print "  %d char-width words" %word_width
         for line in r.readlines():
-            print line
+            if debug:
+                print line
             line_u=line.decode('utf-8')
             line_u_len=len(line_u)
             i=0;
@@ -69,7 +73,7 @@ for file in os.listdir(script_dir):
 
     r.close()
 
-    print '## finished cutting, %d words.' %len(counts)
+    print 'finished cutting, %d words.' %len(counts)
 
 
     sorted_counts = list(counts.items())
@@ -91,7 +95,7 @@ for file in os.listdir(script_dir):
     w.flush()
     w.close()
 
-print 'write done to file '+output_file_path
+print 'written to '+output_file_path
 
 time_end=time.time()
 print '\nfrom %f to %f,   %f seconds taken' %(time_start,time_end,time_end-time_start)
