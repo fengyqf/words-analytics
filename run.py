@@ -4,6 +4,7 @@
 import sys
 import os
 import datetime
+import time
 import ConfigParser
 
 stop_words=[',','，','。','．','、','"','“','”','：',' ','／'
@@ -33,6 +34,8 @@ except :
     print "rconfig.ini ERROR.  You can copy it from rconfig.ini.sample "
     exit()
 
+
+time_start=time.time()
 
 stop_words_u=[it.decode('utf-8') for it in stop_words]
 
@@ -90,3 +93,5 @@ for file in os.listdir(script_dir):
 
 print 'write done to file '+output_file_path
 
+time_end=time.time()
+print '\nfrom %f to %f,   %f seconds taken' %(time_start,time_end,time_end-time_start)
